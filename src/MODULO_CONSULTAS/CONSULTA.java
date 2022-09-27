@@ -1,4 +1,5 @@
 package MODULO_CONSULTAS;
+
 import MODULO_CADASTROS.Cliente;
 import CONEXAO_BANCO.Banco_Dados;
 import java.sql.Connection;
@@ -17,63 +18,67 @@ public class CONSULTA extends javax.swing.JDialog {
     public CONSULTA(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-       //  pesquisar2(); 
-         data_hora();
-          combox();
+        //  pesquisar2(); 
+        //   data_hora();
+        //     combox();
         setLocationRelativeTo(null);
-          setResizable(false);
-         
-   }
-  public void limparTABELA(){
-        DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();   
-        tableModel.setNumRows(0); 
+        setResizable(false);
+
     }
- private void pesquisar2(){
-       Banco_Dados bd = new Banco_Dados();
-     if(bd.getConnection()){
-           try{
-String query = "select * from cliente where nome like ?";
- PreparedStatement stmp = bd.connection.prepareStatement(query);      
-stmp.setString(1,"%"+jTextField1.getText()+"%");
-ResultSet rs = stmp.executeQuery();
-DefaultTableModel model =(DefaultTableModel)jTable1.getModel();
-model.setNumRows(0);
-           
-while(rs.next()){
-    model.addRow(new Object[]{
-          rs.getString("cod"),
-          rs.getString("nome"),
-          rs.getString("cpf"),
-           } ); }           
-          
-} catch(SQLException E){
-JOptionPane.showMessageDialog(null,"ERRO DE GRAVAÇÃO NO BANCO"+E); 
-  }  }      
-  }
- private void pesquisar(){
-  try{
-Class.forName("com.mysql.jdbc.Driver");
-Connection con = DriverManager.getConnection
-        ("jdbc:mysql://localhost/gerencial","root","root");
-String query = "select * from cliente where nome like ?";
-PreparedStatement stmp = con.prepareStatement(query);
-      
-stmp.setString(1,"%"+jTextField1.getText()+"%");
-ResultSet rs = stmp.executeQuery();
-DefaultTableModel model =(DefaultTableModel)jTable1.getModel();
-model.setNumRows(0);
-           
-while(rs.next()){
-    model.addRow(new Object[]{
-          rs.getString("cod"),
-          rs.getString("nome"),
-          rs.getString("cpf"),
-           } ); }            
-}catch(ClassNotFoundException EX){
-JOptionPane.showMessageDialog(null,"DRIVER NAO ENCONTRADO"+EX);            
-} catch(SQLException E){
-JOptionPane.showMessageDialog(null,"ERRO DE GRAVAÇÃO NO BANCO"+E); 
-  }  }    
+
+    public void limparTABELA() {
+        DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
+        tableModel.setNumRows(0);
+    }
+
+    private void pesquisar() {
+        Banco_Dados bd = new Banco_Dados();
+        if (bd.getConnection()) {
+            try {
+                String query = "select * from cliente where nome like ?";
+                PreparedStatement stmp = bd.connection.prepareStatement(query);
+                stmp.setString(1, "%" + jTPESQUISA.getText() + "%");
+                ResultSet rs = stmp.executeQuery();
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                model.setNumRows(0);
+
+                while (rs.next()) {
+                    model.addRow(new Object[]{
+                        rs.getString("idcliente"),
+                        rs.getString("nome"),
+                        rs.getString("cpf"),});
+                }
+            } catch (SQLException E) {
+                JOptionPane.showMessageDialog(null, "ERRO DE PESQUISA NO BANCO" + E);
+            }
+        }
+    }
+
+    private void pesquisar2() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/gerencial", "root", "root");
+            String query = "select * from cliente where nome like ?";
+            PreparedStatement stmp = con.prepareStatement(query);
+
+            stmp.setString(1, "%" + jTPESQUISA.getText() + "%");
+            ResultSet rs = stmp.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setNumRows(0);
+
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getString("cod"),
+                    rs.getString("nome"),
+                    rs.getString("cpf"),});
+            }
+        } catch (ClassNotFoundException EX) {
+            JOptionPane.showMessageDialog(null, "DRIVER NAO ENCONTRADO" + EX);
+        } catch (SQLException E) {
+            JOptionPane.showMessageDialog(null, "ERRO DE GRAVAÇÃO NO BANCO" + E);
+        }
+    }
+
     private void excluir_pela_tabela() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -92,116 +97,123 @@ JOptionPane.showMessageDialog(null,"ERRO DE GRAVAÇÃO NO BANCO"+E);
             JOptionPane.showMessageDialog(null, "ERRO DE SQL" + E);
         }
     }
-    
-    
- private void alterar(){
-    Banco_Dados bd = new Banco_Dados();
-     if(bd.getConnection()){
-         try {
-     String query = "update cliente set nome='"+jTextField3.getText()+"',"
-         + "SOBRENOME='"+jTextField4.getText()+"',"              
-         + "cpf='"+jTextField4.getText()+"' "
-         + "where idcliente='"+jTCOD.getText()+"'"; 
-PreparedStatement alterar = bd.connection.prepareStatement(query); 
- alterar.executeUpdate();
- JOptionPane.showMessageDialog(null,"DADOS ALTERADOS"); 
- alterar.close();
-   bd.connection.close();
- 
- }catch(SQLException E){
-JOptionPane.showMessageDialog(null,"ERRO DE SQL"+E);        
-    } }      
-    }  
- 
- 
- 
- private void selecao() {
-int row = jTable1.getSelectedRow();
-String table_click = (jTable1.getModel().getValueAt(row,0).toString());   
-try { Class.forName("com.mysql.jdbc.Driver");
-Connection conexao = DriverManager.getConnection
-   ("jdbc:mysql://localhost/gerencial","root","root");
-String query = "Select * from cliente where cod ='"+table_click+"'";
-ResultSet rs;
-PreparedStatement pst= conexao.prepareStatement(query);
-rs=pst.executeQuery();        
-  while(rs.next()){                       
-                String add1 = rs.getString("cod");
-                jTCOD.setText(add1);
-                String add2 = rs.getString("nome");
-                jTextField3.setText(add2);
-                String add3 = rs.getString("cpf");
-                jTextField4.setText(add3);  }  
-  
-} catch (SQLException e){JOptionPane.showMessageDialog(null,"ERRO DE SQL"+e);
-} catch (ClassNotFoundException ex) {
-        JOptionPane.showMessageDialog(null,"DRIVER NAO ENCONTRADO"+ex);
-        } }
- 
- 
- private void excluir2(){
-       Banco_Dados bd = new Banco_Dados();
-     if(bd.getConnection()){
-           try{   
-String query = "delete from cliente where cod ='"+jTCOD.getText()+"'";
- PreparedStatement excluir = bd.connection.prepareStatement(query); 
-  excluir.executeUpdate();        
-    } catch (SQLException e){JOptionPane.showMessageDialog(null,"ERRO DE SQL"+e);
-       } }
- }
- 
- 
- 
- private void selecao2(){         
-try {
-Class.forName("com.mysql.jdbc.Driver");
-Connection conn = DriverManager.getConnection
-   ("jdbc:mysql://localhost/gerencial","root","root");
-String query = "Select * from cliente where nome ='"+jTextField1.getText()+"'";
-ResultSet rs;
-PreparedStatement pst= conn.prepareStatement(query);
-rs=pst.executeQuery();
-        
-  while(rs.next()){
-                       
-                String add1 = rs.getString("cod");
-                jTCOD.setText(add1);
-                String add2 = rs.getString("nome");
-                jTextField3.setText(add2);
-                String add3 = rs.getString("cpf");
-                jTextField4.setText(add3);  }  
-  } catch (SQLException e){JOptionPane.showMessageDialog(null,"ERRO DE SQL"+e);
-} catch (ClassNotFoundException ex) {
-        JOptionPane.showMessageDialog(null,"DRIVER NAO ENCONTRADO"+ex);
-        } }
- private void data_hora(){
-     Date data = new Date();
-   // String forma = "dd/MM/yyy,   hh:mm:ss";
-     String forma = "hh:mm:ss";
-    DateFormat formato1 = new SimpleDateFormat(forma);
-    //DateFormat formato = DateFormat.getDateInstance(DateFormat.MEDIUM);
-    // DateFormat formato = DateFormat.getDateInstance(DateFormat.LONG);
-     DateFormat formato = DateFormat.getDateInstance(DateFormat.FULL);
-     jLabel7.setText("DATA DA PESQUISA: "+formato.format(data));
-     jLabel8.setText(" HORA:   "+formato1.format(data));
- }  
- 
- public void combox(){
-      Banco_Dados bd = new Banco_Dados();
-     if(bd.getConnection()){
-           try {
-String query = "Select * from produto where nome" ;
-ResultSet rs;
- PreparedStatement stmp = bd.connection.prepareStatement(query); 
-rs=stmp.executeQuery();
-        
-  while(rs.next()){                     
-               // String add1 = rs.getString("nome");
-              //  jTextField2.setText(add1);
-                jComboBox1.getSelectedItem().toString();
-                  }  
-  } catch (SQLException e){JOptionPane.showMessageDialog(null,"ERRO DE SQL"+e);
-}}}
+
+    private void alterar() {
+        Banco_Dados bd = new Banco_Dados();
+        if (bd.getConnection()) {
+            try {
+                String query = "update cliente set nome='" + jTnome.getText() + "',"
+                        + "SOBRENOME='" + jTcpf.getText() + "',"
+                        + "cpf='" + jTcpf.getText() + "' "
+                        + "where idcliente='" + jTCOD.getText() + "'";
+                PreparedStatement alterar = bd.connection.prepareStatement(query);
+                alterar.executeUpdate();
+                JOptionPane.showMessageDialog(null, "DADOS ALTERADOS");
+                alterar.close();
+                bd.connection.close();
+
+            } catch (SQLException E) {
+                JOptionPane.showMessageDialog(null, "ERRO DE SQL" + E);
+            }
+        }
+    }
+
+    private void selecaotabela() {
+        int row = jTable1.getSelectedRow();
+        String table_click = (jTable1.getModel().getValueAt(row, 0).toString());
+        Banco_Dados bd = new Banco_Dados();
+        if (bd.getConnection()) {
+
+            try {
+                String query = "Select * from cliente where idcliente='" + table_click + "'";
+                ResultSet rs;
+                PreparedStatement pst = bd.connection.prepareStatement(query);
+                rs = pst.executeQuery();
+                while (rs.next()) {
+                    String add1 = rs.getString("idcliente");
+                    jTCOD.setText(add1);
+                    String add2 = rs.getString("nome");
+                    jTnome.setText(add2);
+                    String add3 = rs.getString("cpf");
+                    jTcpf.setText(add3);
+                }
+
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "ERRO DE SQL" + e);
+            }
+        }
+    }
+
+    private void excluir() {
+        Banco_Dados bd = new Banco_Dados();
+        if (bd.getConnection()) {
+            try {
+             String query = "delete from cliente where idcliente ='" + jTCOD.getText() + "'";
+             PreparedStatement excluir = bd.connection.prepareStatement(query);
+             excluir.executeUpdate();
+             JOptionPane.showMessageDialog(null,"CLIENTE EXCLUÍDO COM SUCESSO !!!");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "ERRO AO EXCLUIR O CLIENTE" + e);
+            }
+        }
+    }
+
+    private void selecao() {
+        Banco_Dados bd = new Banco_Dados();
+        if (bd.getConnection()) {
+            try {
+                String query = "Select * from cliente where nome ='" + jTPESQUISA.getText() + "'";
+                ResultSet rs;
+                PreparedStatement pst = bd.connection.prepareStatement(query);
+                rs = pst.executeQuery();
+
+                while (rs.next()) {
+
+                    String add1 = rs.getString("idcliente");
+                    jTCOD.setText(add1);
+                    String add2 = rs.getString("nome");
+                    jTnome.setText(add2);
+                    String add3 = rs.getString("cpf");
+                    jTcpf.setText(add3);
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "ERRO DE SQL" + e);
+            }
+        }
+    }
+
+    private void data_hora() {
+        Date data = new Date();
+        // String forma = "dd/MM/yyy,   hh:mm:ss";
+        String forma = "hh:mm:ss";
+        DateFormat formato1 = new SimpleDateFormat(forma);
+        //DateFormat formato = DateFormat.getDateInstance(DateFormat.MEDIUM);
+        // DateFormat formato = DateFormat.getDateInstance(DateFormat.LONG);
+        DateFormat formato = DateFormat.getDateInstance(DateFormat.FULL);
+        jLabel7.setText("DATA DA PESQUISA: " + formato.format(data));
+        jLabel8.setText(" HORA:   " + formato1.format(data));
+    }
+
+    public void combox() {
+        Banco_Dados bd = new Banco_Dados();
+        if (bd.getConnection()) {
+            try {
+                String query = "Select * from produto where nome";
+                ResultSet rs;
+                PreparedStatement stmp = bd.connection.prepareStatement(query);
+                rs = stmp.executeQuery();
+
+                while (rs.next()) {
+                    // String add1 = rs.getString("nome");
+                    //  jTextField2.setText(add1);
+                    jComboBox1.getSelectedItem().toString();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "ERRO DE SQL" + e);
+            }
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -215,8 +227,8 @@ rs=stmp.executeQuery();
         jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        jTnome = new javax.swing.JTextField();
+        jTcpf = new javax.swing.JTextField();
         jTCOD = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -226,7 +238,7 @@ rs=stmp.executeQuery();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        jTPESQUISA = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -260,6 +272,8 @@ rs=stmp.executeQuery();
         jLabel5.setText("NOME");
 
         jLabel4.setText("COD");
+
+        jTCOD.setEditable(false);
 
         jButton2.setText("Alterar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -302,11 +316,11 @@ rs=stmp.executeQuery();
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(2, 2, 2)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTnome, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTcpf, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,8 +346,8 @@ rs=stmp.executeQuery();
                         .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTCOD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTnome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTcpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
                             .addComponent(jLabel6))
@@ -378,24 +392,22 @@ rs=stmp.executeQuery();
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(51, 51, 51)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(jButton1)
-                        .addGap(35, 35, 35))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20))))
+                .addComponent(jLabel3)
+                .addGap(51, 51, 51)
+                .addComponent(jTPESQUISA, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTPESQUISA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -426,7 +438,7 @@ rs=stmp.executeQuery();
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -463,19 +475,19 @@ rs=stmp.executeQuery();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    //    excluir()
-        excluir2();
+        //    excluir()
+        excluir();
     }//GEN-LAST:event_jButton3ActionPerformed
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         alterar();
     }//GEN-LAST:event_jButton2ActionPerformed
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //pesquisar();
-        selecao2();
+        pesquisar();
+        // selecao2();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        selecao();
+        selecaotabela();
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -484,7 +496,7 @@ rs=stmp.executeQuery();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-       combox();
+        combox();
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
@@ -548,10 +560,10 @@ rs=stmp.executeQuery();
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTCOD;
+    private javax.swing.JTextField jTPESQUISA;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTcpf;
+    private javax.swing.JTextField jTnome;
     // End of variables declaration//GEN-END:variables
 }
