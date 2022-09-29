@@ -98,25 +98,21 @@ public class CONSULTA extends javax.swing.JDialog {
         }
     }
 
-    private void alterar() {
+    private void alterar(){
         Banco_Dados bd = new Banco_Dados();
         if (bd.getConnection()) {
             try {
                 String query = "update cliente set nome='" + jTnome.getText() + "',"
-                        + "SOBRENOME='" + jTcpf.getText() + "',"
                         + "cpf='" + jTcpf.getText() + "' "
                         + "where idcliente='" + jTCOD.getText() + "'";
                 PreparedStatement alterar = bd.connection.prepareStatement(query);
                 alterar.executeUpdate();
-                JOptionPane.showMessageDialog(null, "DADOS ALTERADOS");
+                JOptionPane.showMessageDialog(null, "DADOS DO CLIENTE ALTERADOS");
                 alterar.close();
                 bd.connection.close();
-
             } catch (SQLException E) {
                 JOptionPane.showMessageDialog(null, "ERRO DE SQL" + E);
-            }
-        }
-    }
+            }     }    }
 
     private void selecaotabela() {
         int row = jTable1.getSelectedRow();
@@ -480,10 +476,13 @@ public class CONSULTA extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton3ActionPerformed
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         alterar();
+       pesquisar();
+       Cliente.limparcampos(jPanel2);
     }//GEN-LAST:event_jButton2ActionPerformed
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         pesquisar();
         // selecao2();
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked

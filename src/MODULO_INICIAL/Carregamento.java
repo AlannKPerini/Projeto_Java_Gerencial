@@ -36,7 +36,7 @@ public class Carregamento extends javax.swing.JFrame {
          
          if(jProgressBar1.getValue()==100){
              tm.stop();
-             TOCLOSE(TCC.CANCEL);
+             TOCLOSE(gerencia.CANCEL);
        } } } ); 
     
    

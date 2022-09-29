@@ -179,18 +179,18 @@ public class Login extends javax.swing.JDialog {
     }//GEN-LAST:event_jPasswordField1KeyPressed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String tipo = jComboBox1.getSelectedItem().toString();
-
-if("Gerente".equals(tipo)){
-    jLabel5.setText("1");
-gerente();
-ToClose(TCC.CANCEL);
-}
-if("Servidor".equals(tipo)){
-     jLabel5.setText("2");
-    servidor();
-ToClose(TCC.CANCEL);
-}  
+   
+        String tipo = jComboBox1.getSelectedItem().toString();// registra a escolha 
+    if("Gerente".equals(tipo)){
+    jLabel5.setText("1"); // seta o número 1 na label "escondida"
+       gerente(); // chamada do método gerente
+       ToClose(gerencia.CANCEL);
+       }
+         if("Servidor".equals(tipo)){
+          jLabel5.setText("2");// seta o número 2 na label "escondida"
+          servidor(); // chamada do método servidor
+          ToClose(gerencia.CANCEL);
+      }  
     }//GEN-LAST:event_jButton1ActionPerformed
 
     
@@ -203,16 +203,12 @@ PreparedStatement pst = bd.connection.prepareStatement(sql);
 ResultSet rs; 
              pst.setString(1,jTextField1.getText());
              pst.setString(2,jPasswordField1.getText());
-             pst.setString(3,jLabel5.getText());
-           
-     
-             rs=pst.executeQuery();
-            
+             pst.setString(3,jLabel5.getText());              
+             rs=pst.executeQuery();            
   if(rs.next()) { 
       JOptionPane.showMessageDialog(null,"Usuario Aceito");
   new Home().show();  }
-            else {JOptionPane.showMessageDialog 
-             (null,"Acesso NEGADO - TENTE NOVAMENTE");    
+            else {JOptionPane.showMessageDialog(null,"Acesso NEGADO - TENTE NOVAMENTE");    
       Login log = new Login(null,true);
       log.setVisible(true);
    }  }catch(Exception e){ JOptionPane.showMessageDialog(null,e);
