@@ -20,7 +20,8 @@ public class CONSULTA extends javax.swing.JDialog {
         initComponents();
         //  pesquisar2(); 
         //   data_hora();
-        //     combox();
+            combox();
+          //  pesquisar();
         setLocationRelativeTo(null);
         setResizable(false);
 
@@ -194,16 +195,14 @@ public class CONSULTA extends javax.swing.JDialog {
         Banco_Dados bd = new Banco_Dados();
         if (bd.getConnection()) {
             try {
-                String query = "Select * from produto where nome";
+                String query = "Select nome from cliente";
                 ResultSet rs;
                 PreparedStatement stmp = bd.connection.prepareStatement(query);
                 rs = stmp.executeQuery();
 
                 while (rs.next()) {
-                    // String add1 = rs.getString("nome");
-                    //  jTextField2.setText(add1);
-                    jComboBox1.getSelectedItem().toString();
-                }
+               jComboBox1.addItem(rs.getString("nome"));  
+              }
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, "ERRO DE SQL" + e);
             }
@@ -263,14 +262,18 @@ public class CONSULTA extends javax.swing.JDialog {
         jPanel2.setBackground(new java.awt.Color(102, 153, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Alteração de dados"));
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("CPF");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("NOME");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("COD");
 
         jTCOD.setEditable(false);
 
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton2.setText("Alterar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -278,6 +281,7 @@ public class CONSULTA extends javax.swing.JDialog {
             }
         });
 
+        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton3.setText("Excluir");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -285,6 +289,7 @@ public class CONSULTA extends javax.swing.JDialog {
             }
         });
 
+        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton4.setText("LIMPAR");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -292,6 +297,7 @@ public class CONSULTA extends javax.swing.JDialog {
             }
         });
 
+        jComboBox1.setBackground(new java.awt.Color(153, 153, 153));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -355,6 +361,7 @@ public class CONSULTA extends javax.swing.JDialog {
         jPanel3.setBackground(new java.awt.Color(102, 153, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Pesquisa de Dados"));
 
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -373,6 +380,7 @@ public class CONSULTA extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(jTable1);
 
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -380,6 +388,7 @@ public class CONSULTA extends javax.swing.JDialog {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("NOME:");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -388,15 +397,17 @@ public class CONSULTA extends javax.swing.JDialog {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3)
-                .addGap(51, 51, 51)
-                .addComponent(jTPESQUISA, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(51, 51, 51)
+                        .addComponent(jTPESQUISA, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(jButton1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -406,7 +417,7 @@ public class CONSULTA extends javax.swing.JDialog {
                     .addComponent(jTPESQUISA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -420,21 +431,20 @@ public class CONSULTA extends javax.swing.JDialog {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(22, 22, 22)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(238, 238, 238)
-                            .addComponent(jLabel2)))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(238, 238, 238)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(198, 198, 198)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -443,13 +453,13 @@ public class CONSULTA extends javax.swing.JDialog {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel7, jLabel8});
@@ -462,9 +472,7 @@ public class CONSULTA extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -495,7 +503,7 @@ public class CONSULTA extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        combox();
+    //   combox();
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
