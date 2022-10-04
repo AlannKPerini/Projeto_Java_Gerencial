@@ -4,6 +4,9 @@ package MODULO_CADASTROS;
 import CONEXAO_BANCO.Banco_Dados;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -15,6 +18,9 @@ public class Cliente extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+    URL img= this.getClass().getResource("clie3.png");
+    Image    iconeTitulo = Toolkit.getDefaultToolkit().getImage(img);
+    setIconImage(iconeTitulo);
 
     }
 
@@ -48,6 +54,8 @@ public class Cliente extends javax.swing.JDialog {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("    Cadastro de Cliente");
+        setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
 
