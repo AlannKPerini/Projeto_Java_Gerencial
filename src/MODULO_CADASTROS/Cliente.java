@@ -18,13 +18,14 @@ public class Cliente extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+        // método para alterar o icon do java para uma imagem escolhida
     URL img= this.getClass().getResource("clie3.png");
     Image    iconeTitulo = Toolkit.getDefaultToolkit().getImage(img);
     setIconImage(iconeTitulo);
 
     }
 
-    // area de dessenvolvimento ...
+    // area de desenvolvimento ...
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
