@@ -280,6 +280,7 @@ public class Cliente extends javax.swing.JDialog {
          //  limparcampos(jPanel3);
             stmp.close();
             bd.connection.close();
+          limparcampos(jPanel3);
             } catch (SQLException E) {
            JOptionPane.showMessageDialog
            (null, "ERRO DE GRAVAÇÃO NO BANCO" + E.toString());

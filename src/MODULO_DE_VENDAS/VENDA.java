@@ -34,8 +34,29 @@ public class VENDA extends javax.swing.JDialog {
    float quantidade,valor,total;
 
    
-    // MÉTODOS
+    // MÉTODOS DE VENDAS
  
+   void funcionariologado(){
+         if (bd.getConnection()) {
+            try {
+                String query = "select login from funcionario as f\n" +
+                               "inner join log as l on f.idfuncionario = l.idfuncionario "
+                        + "where l.idlog = (select MAX(idlog) AS idlog from log)";
+                ResultSet rs;
+                PreparedStatement cmd = bd.connection.prepareStatement(query);
+                rs = cmd.executeQuery();
+                while (rs.next()) {
+                   String add0 = rs.getString("total");
+                    
+                
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "sql" + e);
+            }
+        }
+    
+   }
+   
     void venda(){
             if(bd.getConnection()){
        try{
@@ -136,7 +157,14 @@ JOptionPane.showMessageDialog(null,"ERRO DE GRAVAÇÃO NO BANCO"+E.toString());
     }    }
         
         
-    }        
+    }     
+    
+    void calcularproduto(){
+      quantidade = Float.valueOf(jTextField4.getText());
+        valor = Float.valueOf(jTextField2.getText());
+        total = quantidade * valor;
+        jTextField6.setText(String.valueOf(total));
+}
     void consultarnf(){
           if(bd.getConnection()){
        try{
@@ -432,6 +460,11 @@ rs=stmp.executeQuery();
                 jTextField7CaretUpdate(evt);
             }
         });
+        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField7ActionPerformed(evt);
+            }
+        });
         jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField7KeyPressed(evt);
@@ -480,6 +513,11 @@ rs=stmp.executeQuery();
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel10.setText("NOTA FISCAL:");
@@ -697,7 +735,7 @@ rs=stmp.executeQuery();
                             .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(1, 1, 1)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel14)
                             .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -907,10 +945,7 @@ rs=stmp.executeQuery();
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void jTextField4CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTextField4CaretUpdate
-        quantidade = Float.valueOf(jTextField4.getText());
-        valor = Float.valueOf(jTextField2.getText());
-        total = quantidade * valor;
-        jTextField6.setText(String.valueOf(total));
+    calcularproduto();
 
     }//GEN-LAST:event_jTextField4CaretUpdate
 
@@ -918,17 +953,21 @@ rs=stmp.executeQuery();
         adicionar_itens_vendas();
         consultarnf();
         somaNF();
-        limparcampos(jPanel3);
+          jTextField7.setText("");
+          jTextField1.setText("");
+          jTextField6.setText("");
+           limparcampos(jPanel3);
        
 
     }//GEN-LAST:event_ADICIONAR_VENDA__ActionPerformed
 
     private void jTextField7KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyPressed
-        pesquisarprodutos();         // TODO add your handling code here:
+        pesquisarprodutos(); 
+      
     }//GEN-LAST:event_jTextField7KeyPressed
 
     private void jTextField7CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTextField7CaretUpdate
-        pesquisarprodutos();
+    //    pesquisarprodutos();
     }//GEN-LAST:event_jTextField7CaretUpdate
 
     private void jTextField5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyPressed
@@ -950,6 +989,14 @@ rs=stmp.executeQuery();
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         seleçaocliente();
     }//GEN-LAST:event_jTable2MouseClicked
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField7ActionPerformed
 
     /**
      * @param args the command line arguments

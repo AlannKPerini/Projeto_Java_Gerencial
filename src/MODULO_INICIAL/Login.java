@@ -9,6 +9,7 @@ package MODULO_INICIAL;
 import CONEXAO_BANCO.Banco_Dados;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -31,6 +32,17 @@ public class Login extends javax.swing.JDialog {
         return retStatus;
     }
 
+    private int Mat;
+
+    public int getMat() {
+        return Mat;
+    }
+
+    public void setMat(int Mat) {
+        this.Mat = Mat;
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -50,6 +62,7 @@ public class Login extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -101,9 +114,6 @@ public class Login extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -125,6 +135,13 @@ public class Login extends javax.swing.JDialog {
                         .addGap(305, 305, 305)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 327, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,7 +164,9 @@ public class Login extends javax.swing.JDialog {
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(181, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -184,17 +203,23 @@ public class Login extends javax.swing.JDialog {
     if("Gerente".equals(tipo)){
     jLabel5.setText("1"); // seta o número 1 na label "escondida"
        gerente(); // chamada do método gerente
+       log();
        ToClose(gerencia.CANCEL);
+      
        }
          if("Servidor".equals(tipo)){
           jLabel5.setText("2");// seta o número 2 na label "escondida"
           servidor(); // chamada do método servidor
+           log();
           ToClose(gerencia.CANCEL);
       }  
+         
+      //    funcionario = Float.valueOf(jLabel3.getText());
+     //        System.out.println(funcionario);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     
-    public void gerente(){
+    public void gerente(){     
   Banco_Dados bd = new Banco_Dados();
         if (bd.getConnection()) {
 try{
@@ -203,9 +228,12 @@ PreparedStatement pst = bd.connection.prepareStatement(sql);
 ResultSet rs; 
              pst.setString(1,jTextField1.getText());
              pst.setString(2,jPasswordField1.getText());
-             pst.setString(3,jLabel5.getText());              
-             rs=pst.executeQuery();            
-  if(rs.next()) { 
+             pst.setString(3,jLabel5.getText());             
+             rs=pst.executeQuery();  
+            if(rs.next()) { 
+            //  jLabel3.setCodigo(rs.getInt("idfuncionario"));
+             // Mat = rs.getInt("idfuncionario");
+             //   System.out.println(Mat);
       JOptionPane.showMessageDialog(null,"Usuario Aceito");
   new Home().show();  }
             else {JOptionPane.showMessageDialog(null,"Acesso NEGADO - TENTE NOVAMENTE");    
@@ -223,13 +251,14 @@ PreparedStatement pst = bd.connection.prepareStatement(sql);
 ResultSet rs; 
              pst.setString(1,jTextField1.getText());
              pst.setString(2,jPasswordField1.getText());
-             pst.setString(3,jLabel5.getText());
+            pst.setString(3,jLabel5.getText()); 
      
              rs=pst.executeQuery();
-            
+           // Mat = rs.getInt("idfuncionario");
+              //  System.out.println(Mat);
   if(rs.next()) { 
       JOptionPane.showMessageDialog(null,"Usuario Aceito");
-       new Home().show();   }
+       new HomeServidor().show();   }
             else {JOptionPane.showMessageDialog 
              (null,"Acesso NEGADO - TENTE NOVAMENTE");    
       Login log = new Login(null,true);
@@ -237,6 +266,27 @@ ResultSet rs;
    }  }catch(Exception e){ JOptionPane.showMessageDialog(null,e);
         } }}
     
+   
+   
+   public void log() {
+        Banco_Dados bd = new Banco_Dados();
+        if (bd.getConnection()) {
+            try {
+       String query = "insert into log(idfuncionario) values(?)";
+       PreparedStatement stmp = bd.connection.prepareStatement(query);
+           stmp.setString(1,jLabel5.getText());         
+         stmp.executeUpdate();
+         //  JOptionPane.showMessageDialog(null,"DADOS GRAVADOS");
+         //  limparcampos(jPanel3);
+            stmp.close();
+            bd.connection.close();
+            } catch (SQLException E) {
+           JOptionPane.showMessageDialog
+           (null, "ERRO DE GRAVAÇÃO NO BANCO" + E.toString());
+
+            }  }   }
+   
+   
     /**
      * @param args the command line arguments
      */
@@ -284,6 +334,7 @@ ResultSet rs;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

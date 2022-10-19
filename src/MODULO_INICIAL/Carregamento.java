@@ -3,43 +3,40 @@ package MODULO_INICIAL;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Carregamento extends javax.swing.JFrame {
+public class Carregamento extends javax.swing.JFrame {// nome da classe extendendo o jFrame
 
-   int A = 30;
-   int B = 0;
-   
-   private int TOCLOSE(int retStatus){
-      setVisible(false);
-      dispose();
-      return retStatus;
-      }  
-  
-       public Carregamento() {
+    int A = 20; // velocidade do carregamento, quanto maior o número mais lento
+    int B = 0;
+
+    private int TOCLOSE(int retStatus) {
+        setVisible(false);
+        dispose();
+        return retStatus;
+    }
+
+    public Carregamento() {  // nome da classe
         initComponents();
         tm.start();
     }
-    
-  javax.swing.Timer tm = new javax.swing.Timer
-          (A, new ActionListener(){
-   public void actionPerformed(ActionEvent e){
-    
-       B=B+1;
-     
-     jProgressBar1.setValue(B);
-     if(jProgressBar1.getValue()==99){
-     //    TELA_INICIAL tp = new TELA_INICIAL();
-      // tp.setVisible(true);
-         Login lg = new Login(null,true);
-          lg.setVisible(true);
-          
-     }else
-         
-         if(jProgressBar1.getValue()==100){
-             tm.stop();
-             TOCLOSE(gerencia.CANCEL);
-       } } } ); 
-    
-   
+
+    javax.swing.Timer tm = new javax.swing.Timer(A, new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+
+            B = B + 1;
+
+            jProgressBar1.setValue(B);
+            if (jProgressBar1.getValue() == 99) {
+                Login lg = new Login(null, true);
+                lg.setVisible(true);
+                TOCLOSE(gerencia.CANCEL);
+             
+            } else if (jProgressBar1.getValue() == 100) {
+                tm.stop();
+                TOCLOSE(gerencia.CANCEL);
+            }
+        }
+    });
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
