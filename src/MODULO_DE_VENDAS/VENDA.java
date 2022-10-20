@@ -6,6 +6,8 @@
 package MODULO_DE_VENDAS;
 
 import CONEXAO_BANCO.Banco_Dados;
+import MODULO_INICIAL.Login;
+import Sessao.LoginSessao;
 import java.awt.Component;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,176 +29,187 @@ public class VENDA extends javax.swing.JDialog {
     public VENDA(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-             setLocationRelativeTo(null);
-             setResizable(false);
+        setLocationRelativeTo(null);
+        setResizable(false);
+        funcionariologado();
+        
     }
-   Banco_Dados bd = new Banco_Dados();
-   float quantidade,valor,total;
+    Banco_Dados bd = new Banco_Dados();
+    float quantidade, valor, total;
+    
 
-   
     // MÉTODOS DE VENDAS
- 
-   void funcionariologado(){
-         if (bd.getConnection()) {
+    void funcionariologado() {
+        if (bd.getConnection()) {
             try {
-                String query = "select login from funcionario as f\n" +
-                               "inner join log as l on f.idfuncionario = l.idfuncionario "
+                String query = "select l.idfuncionario,f.login from funcionario as f\n"
+                        + "inner join log as l on f.idfuncionario = l.idfuncionario "
                         + "where l.idlog = (select MAX(idlog) AS idlog from log)";
                 ResultSet rs;
                 PreparedStatement cmd = bd.connection.prepareStatement(query);
                 rs = cmd.executeQuery();
                 while (rs.next()) {
-                   String add0 = rs.getString("total");
-                    
-                
+                    String add0 = rs.getString("login");
+                    String add1 = rs.getString("idfuncionario");
+                    jLabel20.setText(add0);
+                    jTextField10.setText(add1);
+
                 }
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, "sql" + e);
             }
         }
-    
-   }
-   
-    void venda(){
-            if(bd.getConnection()){
-       try{
-    String query = "insert into vendas(idcliente,idfuncionario) values(?,?)";
-    PreparedStatement stmp = bd.connection.prepareStatement(query);     
-     stmp.setString(1,jTextField8.getText());
-     stmp.setString(2,jTextField10.getText());     
-     stmp.executeUpdate();
- //   JOptionPane.showMessageDialog(null,"DADOS GRAVADOS");
-           stmp.close();
-           bd.connection.close();        
- } catch(SQLException E){
-JOptionPane.showMessageDialog(null,"ERRO DE GRAVAÇÃO NO BANCO"+E.toString()); 
-    }   }    }    
-    
-    void pesq_clienteTB(){
-         if(bd.getConnection()){
-           try{
-String query = "select * from cliente where nome like ?";
- PreparedStatement stmp = bd.connection.prepareStatement(query);      
-stmp.setString(1,"%"+jTextField3.getText()+"%");
-ResultSet rs = stmp.executeQuery();
-DefaultTableModel model =(DefaultTableModel)jTable2.getModel();
-model.setNumRows(0);
-           
-while(rs.next()){
-    model.addRow(new Object[]{
-          rs.getString("idcliente"),
-          rs.getString("nome"),
-          rs.getString("cpf"),
-           } ); }           
-          
-} catch(SQLException E){
-JOptionPane.showMessageDialog(null,"ERRO DE GRAVAÇÃO NO BANCO"+E); 
-  }  }  
+
     }
-    
-    void pesq_produtosTB(){
-        if(bd.getConnection()){
-           try{
-String query = "select * from produto where produto like ?";
- PreparedStatement stmp = bd.connection.prepareStatement(query);      
-stmp.setString(1,"%"+jTextField5.getText()+"%");
-ResultSet rs = stmp.executeQuery();
-DefaultTableModel model =(DefaultTableModel)jTable3.getModel();
-model.setNumRows(0);
-           
-while(rs.next()){
-    model.addRow(new Object[]{
-          rs.getString("idproduto"),
-          rs.getString("produto"),
-          } ); }           
-          
-} catch(SQLException E){
-JOptionPane.showMessageDialog(null,"ERRO DE GRAVAÇÃO NO BANCO"+E); 
-  }  }  
+
+    void venda() {
+        if (bd.getConnection()) {
+            try {
+                
+                String query = "insert into vendas(idcliente,idfuncionario) values(?,?)";
+                PreparedStatement stmp = bd.connection.prepareStatement(query);
+                stmp.setString(1, jTextField8.getText());
+                stmp.setString(2, jTextField10.getText());
+                stmp.executeUpdate();
+                //   JOptionPane.showMessageDialog(null,"DADOS GRAVADOS");
+                stmp.close();
+                bd.connection.close();
+            } catch (SQLException E) {
+                JOptionPane.showMessageDialog(null, "ERRO DE GRAVAÇÃO NO BANCO" + E.toString());
+            }
+        }
     }
-    
-    void pesq_func(){
-       if(bd.getConnection()){
-           try{  
-        String query = "Select * from funcionario where idfuncionario ='"+jTextField10.getText()+"'";
-ResultSet rs;
- PreparedStatement stmp = bd.connection.prepareStatement(query);   
-rs=stmp.executeQuery();
-        
-  while(rs.next()){                       
-                String add1 = rs.getString("login");
-                jLabel22.setText(add1);
-                 }
-  } catch (SQLException e){JOptionPane.showMessageDialog(null,"ERRO DE SQL"+e);
-} }     
-        
-        
+
+    void pesq_clienteTB() {
+        if (bd.getConnection()) {
+            try {
+                String query = "select * from cliente where nome like ?";
+                PreparedStatement stmp = bd.connection.prepareStatement(query);
+                stmp.setString(1, "%" + jTextField3.getText() + "%");
+                ResultSet rs = stmp.executeQuery();
+                DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+                model.setNumRows(0);
+
+                while (rs.next()) {
+                    model.addRow(new Object[]{
+                        rs.getString("idcliente"),
+                        rs.getString("nome"),
+                        rs.getString("cpf"),});
+                }
+
+            } catch (SQLException E) {
+                JOptionPane.showMessageDialog(null, "ERRO DE GRAVAÇÃO NO BANCO" + E);
+            }
+        }
     }
-    
-    void adicionar_itens_vendas(){
-       if(bd.getConnection()){
-       try{
-    String query = "insert into vendas_has_produto (idvenda,idproduto,quant,valorunit,total) values(?,?,?,?,?)";
-    PreparedStatement stmp = bd.connection.prepareStatement(query);     
-        
-           quantidade = Float.valueOf(jTextField4.getText());
-           valor = Float.valueOf(jTextField2.getText());
-           total = quantidade * valor;
-           jTextField6.setText(String.valueOf(total));
-     stmp.setString(1,jLabel11.getText());
-     stmp.setString(2,jTextField7.getText());   
-     stmp.setString(3,jTextField4.getText());
-     stmp.setString(4,jTextField2.getText()); 
-     stmp.setString(5,jTextField6.getText());
-     stmp.executeUpdate();
-   // JOptionPane.showMessageDialog(null,"DADOS GRAVADOS");
-           stmp.close();
-           bd.connection.close();        
- } catch(SQLException E){
-JOptionPane.showMessageDialog(null,"ERRO DE GRAVAÇÃO NO BANCO"+E.toString()); 
-    }    }
-        
-        
-    }     
-    
-    void calcularproduto(){
-      quantidade = Float.valueOf(jTextField4.getText());
+
+    void pesq_produtosTB() {
+        if (bd.getConnection()) {
+            try {
+                String query = "select * from produto where produto like ?";
+                PreparedStatement stmp = bd.connection.prepareStatement(query);
+                stmp.setString(1, "%" + jTextField5.getText() + "%");
+                ResultSet rs = stmp.executeQuery();
+                DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+                model.setNumRows(0);
+
+                while (rs.next()) {
+                    model.addRow(new Object[]{
+                        rs.getString("idproduto"),
+                        rs.getString("produto"),});
+                }
+
+            } catch (SQLException E) {
+                JOptionPane.showMessageDialog(null, "ERRO DE GRAVAÇÃO NO BANCO" + E);
+            }
+        }
+    }
+
+    void pesq_func() {
+        if (bd.getConnection()) {
+            try {
+                String query = "Select * from funcionario where idfuncionario ='" + jTextField10.getText() + "'";
+                ResultSet rs;
+                PreparedStatement stmp = bd.connection.prepareStatement(query);
+                rs = stmp.executeQuery();
+
+                while (rs.next()) {
+                    String add1 = rs.getString("login");
+                    jLabel22.setText(add1);
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "ERRO DE SQL" + e);
+            }
+        }
+
+    }
+
+    void adicionar_itens_vendas() {
+        if (bd.getConnection()) {
+            try {
+                String query = "insert into vendas_has_produto (idvenda,idproduto,quant,valorunit,total) values(?,?,?,?,?)";
+                PreparedStatement stmp = bd.connection.prepareStatement(query);
+
+                quantidade = Float.valueOf(jTextField4.getText());
+                valor = Float.valueOf(jTextField2.getText());
+                total = quantidade * valor;
+                jTextField6.setText(String.valueOf(total));
+                stmp.setString(1, jLabel11.getText());
+                stmp.setString(2, jTextField7.getText());
+                stmp.setString(3, jTextField4.getText());
+                stmp.setString(4, jTextField2.getText());
+                stmp.setString(5, jTextField6.getText());
+                stmp.executeUpdate();
+                // JOptionPane.showMessageDialog(null,"DADOS GRAVADOS");
+                stmp.close();
+                bd.connection.close();
+            } catch (SQLException E) {
+                JOptionPane.showMessageDialog(null, "ERRO DE GRAVAÇÃO NO BANCO" + E.toString());
+            }
+        }
+
+    }
+
+    void calcularproduto() {
+        quantidade = Float.valueOf(jTextField4.getText());
         valor = Float.valueOf(jTextField2.getText());
         total = quantidade * valor;
         jTextField6.setText(String.valueOf(total));
-}
-    void consultarnf(){
-          if(bd.getConnection()){
-       try{
-        String query = "select vendas_has_produto.idproduto,"
-                + "produto.produto,"
-                + "vendas_has_produto.valorunit,"
-                + "vendas_has_produto.quant,"
-                + "vendas_has_produto.total "
-                + "from vendas_has_produto "
-                + "inner join produto on vendas_has_produto.idproduto = produto.idproduto"
-                + " where vendas_has_produto.idvenda like ?";         
-                 
-        PreparedStatement cmd = bd.connection.prepareStatement(query); 
-            cmd.setString(1,"%"+jLabel11.getText()+"%" );           
-            ResultSet rs;
-            rs = cmd.executeQuery();            
-            DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
-          model.setNumRows(0);
-        while(rs.next()){
-                model.addRow(new Object[]{
-                   rs.getString("idproduto"),
-                     rs.getString("produto"),
-                     rs.getString("valorunit"),
-                    rs.getString("quant"),
-                     rs.getString("total"),
-                    
-                });  }     } 
-        catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "ERRO DE SQL CONSULTA_NOTA");
-        }}  
-    }        
-    void ID(){
+    }
+
+    void consultarnf() {
+        if (bd.getConnection()) {
+            try {
+                String query = "select vendas_has_produto.idproduto,"
+                        + "produto.produto,"
+                        + "vendas_has_produto.valorunit,"
+                        + "vendas_has_produto.quant,"
+                        + "vendas_has_produto.total "
+                        + "from vendas_has_produto "
+                        + "inner join produto on vendas_has_produto.idproduto = produto.idproduto"
+                        + " where vendas_has_produto.idvenda like ?";
+
+                PreparedStatement cmd = bd.connection.prepareStatement(query);
+                cmd.setString(1, "%" + jLabel11.getText() + "%");
+                ResultSet rs;
+                rs = cmd.executeQuery();
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                model.setNumRows(0);
+                while (rs.next()) {
+                    model.addRow(new Object[]{
+                        rs.getString("idproduto"),
+                        rs.getString("produto"),
+                        rs.getString("valorunit"),
+                        rs.getString("quant"),
+                        rs.getString("total"),});
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "ERRO DE SQL CONSULTA_NOTA");
+            }
+        }
+    }
+
+    void ID() {
         if (bd.getConnection()) {
             try {
                 String query = "select MAX(idvenda) AS idvenda from vendas";
@@ -212,78 +225,79 @@ JOptionPane.showMessageDialog(null,"ERRO DE GRAVAÇÃO NO BANCO"+E.toString());
             }
         }
     }
-    
-    void limparTABELA(){
-        DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();   
-        tableModel.setNumRows(0); 
-          DefaultTableModel tableModel1 = (DefaultTableModel) jTable2.getModel();   
+
+    void limparTABELA() {
+        DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
+        tableModel.setNumRows(0);
+        DefaultTableModel tableModel1 = (DefaultTableModel) jTable2.getModel();
         tableModel1.setNumRows(0);
-             DefaultTableModel tableModel2 = (DefaultTableModel) jTable3.getModel();   
+        DefaultTableModel tableModel2 = (DefaultTableModel) jTable3.getModel();
         tableModel2.setNumRows(0);
     }
-    void somaNF(){
+
+    void somaNF() {
         if (bd.getConnection()) {
-            try {        
-        
-        String query = "select sum(total) AS total FROM vendas_has_produto where idvenda like ?";
-         PreparedStatement cmd = bd.connection.prepareStatement(query);
-                cmd.setString(1,"%"+jLabel11.getText()+"%" );
-                       ResultSet rs = cmd.executeQuery();
-                            if(rs.next()) {
-                                String add0 = rs.getString("total");
-                              jTextField9.setText(add0);
-                            }          
+            try {
+
+                String query = "select sum(total) AS total FROM vendas_has_produto where idvenda like ?";
+                PreparedStatement cmd = bd.connection.prepareStatement(query);
+                cmd.setString(1, "%" + jLabel11.getText() + "%");
+                ResultSet rs = cmd.executeQuery();
+                if (rs.next()) {
+                    String add0 = rs.getString("total");
+                    jTextField9.setText(add0);
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "SQL - SOMA DE VALOR ");
+            }
         }
-        catch (SQLException e)
-        {
-            JOptionPane.showMessageDialog(null, "SQL - SOMA DE VALOR ");
+    }
+
+    void seleçaocliente() {
+
+        jTextField8.setText(jTable2.getModel().getValueAt(jTable2.getSelectedRow(), 0).toString());
+        jLabel15.setText(jTable2.getModel().getValueAt(jTable2.getSelectedRow(), 1).toString());
+        jLabel16.setText(jTable2.getModel().getValueAt(jTable2.getSelectedRow(), 2).toString());
+
+    }
+
+    void seleçaoproduto() {
+        jTextField7.setText(jTable3.getModel().getValueAt(jTable3.getSelectedRow(), 0).toString());
+    }
+
+    void pesquisarprodutos() {
+        if (bd.getConnection()) {
+            try {
+                String query = "select * from produto where idproduto ='" + jTextField7.getText() + "'";
+                ResultSet rs;
+                PreparedStatement stmp = bd.connection.prepareStatement(query);
+                rs = stmp.executeQuery();
+
+                while (rs.next()) {
+                    String add1 = rs.getString("produto");
+                    jTextField1.setText(add1);
+                    String add2 = rs.getString("valorunit");
+                    jTextField2.setText(add2);
+
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "ERRO DE SQL" + e);
+            }
         }
-    }}
-    void seleçaocliente(){
-        
-        
-    jTextField8.setText(jTable2.getModel().getValueAt(jTable2.getSelectedRow(), 0).toString());
-    jLabel15.setText(jTable2.getModel().getValueAt(jTable2.getSelectedRow(), 1).toString());
-    jLabel16.setText(jTable2.getModel().getValueAt(jTable2.getSelectedRow(), 2).toString());
-              
+
     }
-    void seleçaoproduto(){
-        jTextField7.setText(jTable3.getModel().getValueAt(jTable3.getSelectedRow(), 0).toString());            
+
+    void limparcampos(JPanel jPanel) {
+        Component[] componentes = jPanel.getComponents();
+        for (int i = 0; i < componentes.length; i++) {
+            if (componentes[i] instanceof JTextField) {
+                JTextField camposTF = (JTextField) componentes[i];
+                camposTF.setText("");
+
+            }
+        }
     }
-    void pesquisarprodutos(){        
-        if(bd.getConnection()){
-           try{  
-  String query = "select * from produto where idproduto ='"+jTextField7.getText()+"'";
-ResultSet rs;
- PreparedStatement stmp = bd.connection.prepareStatement(query);   
-rs=stmp.executeQuery();
-        
-  while(rs.next()){                       
-               String add1 = rs.getString("produto");
-               jTextField1.setText(add1);
-               String add2 = rs.getString("valorunit");
-             jTextField2.setText(add2);
-                   
-                 }  
-  } catch (SQLException e){JOptionPane.showMessageDialog(null,"ERRO DE SQL"+e);
-} }    
-        
-        
-    }
-    void limparcampos(JPanel jPanel){
-       Component [] componentes = jPanel.getComponents();
-       for(int i=0;i<componentes.length;i++)
-           if(componentes[i] instanceof JTextField){
-        JTextField camposTF = (JTextField) componentes[i];
-        camposTF.setText("");
-        
-       }
-    } 
-   
-   
-   
-   
-   
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -337,6 +351,7 @@ rs=stmp.executeQuery();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jTextField10 = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -827,6 +842,7 @@ rs=stmp.executeQuery();
         jLabel22.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
 
         jTextField10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jTextField10.setEnabled(false);
         jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField10KeyPressed(evt);
@@ -840,12 +856,17 @@ rs=stmp.executeQuery();
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addComponent(jLabel1)
-                .addGap(61, 61, 61)
-                .addComponent(jLabel21)
-                .addGap(18, 18, 18)
-                .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(182, 182, 182)
+                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel21)
+                        .addGap(5, 5, 5)
+                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(159, 159, 159)
                 .addComponent(jLabel19)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -871,12 +892,13 @@ rs=stmp.executeQuery();
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(27, 27, 27)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jTextField10)
-                                        .addComponent(jLabel21))
-                                    .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addComponent(jLabel21)
+                                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(9, 9, 9)
+                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -913,12 +935,12 @@ rs=stmp.executeQuery();
     }//GEN-LAST:event_jTextField10KeyPressed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        TELAFINAL tf = new TELAFINAL(null,true);
+        TELAFINAL tf = new TELAFINAL(null, true);
         tf.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -945,7 +967,7 @@ rs=stmp.executeQuery();
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void jTextField4CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTextField4CaretUpdate
-    calcularproduto();
+        calcularproduto();
 
     }//GEN-LAST:event_jTextField4CaretUpdate
 
@@ -953,21 +975,21 @@ rs=stmp.executeQuery();
         adicionar_itens_vendas();
         consultarnf();
         somaNF();
-          jTextField7.setText("");
-          jTextField1.setText("");
-          jTextField6.setText("");
-           limparcampos(jPanel3);
-       
+        jTextField7.setText("");
+        jTextField1.setText("");
+        jTextField6.setText("");
+        limparcampos(jPanel3);
+
 
     }//GEN-LAST:event_ADICIONAR_VENDA__ActionPerformed
 
     private void jTextField7KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyPressed
-        pesquisarprodutos(); 
-      
+        pesquisarprodutos();
+
     }//GEN-LAST:event_jTextField7KeyPressed
 
     private void jTextField7CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTextField7CaretUpdate
-    //    pesquisarprodutos();
+        //    pesquisarprodutos();
     }//GEN-LAST:event_jTextField7CaretUpdate
 
     private void jTextField5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyPressed
@@ -1058,6 +1080,7 @@ rs=stmp.executeQuery();
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;

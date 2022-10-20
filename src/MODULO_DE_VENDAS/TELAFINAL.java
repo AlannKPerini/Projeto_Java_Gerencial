@@ -39,7 +39,6 @@ public class TELAFINAL extends javax.swing.JDialog {
     void somaNF() {
         if (bd.getConnection()) {
             try {
-
                 String query = "select sum(total) AS total FROM vendas_has_produto where idvenda like ?";
                 PreparedStatement cmd = bd.connection.prepareStatement(query);
                 cmd.setString(1, "%" + jTextField4.getText() + "%");
@@ -68,6 +67,8 @@ public class TELAFINAL extends javax.swing.JDialog {
 
                 stmp.executeUpdate();
                 JOptionPane.showMessageDialog(null, "VENDA GRAVADA");
+                jTextField3.setText("");
+                jTextField2.setText("");
                 stmp.close();
                 bd.connection.close();
             } catch (SQLException E) {
@@ -414,6 +415,8 @@ public class TELAFINAL extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         caixa();
         limparcampos(jPanel1);
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyPressed

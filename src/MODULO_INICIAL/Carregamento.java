@@ -29,7 +29,7 @@ public class Carregamento extends javax.swing.JFrame {// nome da classe extenden
                 Login lg = new Login(null, true);
                 lg.setVisible(true);
                 TOCLOSE(gerencia.CANCEL);
-             
+
             } else if (jProgressBar1.getValue() == 100) {
                 tm.stop();
                 TOCLOSE(gerencia.CANCEL);

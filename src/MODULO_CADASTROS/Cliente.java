@@ -17,7 +17,8 @@ public class Cliente extends javax.swing.JDialog {
     public Cliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setLocationRelativeTo(null);
+         setLocationRelativeTo(null);
+         setResizable(false);
         // método para alterar o icon do java para uma imagem escolhida
     URL img= this.getClass().getResource("clie3.png");
     Image    iconeTitulo = Toolkit.getDefaultToolkit().getImage(img);
