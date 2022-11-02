@@ -32,7 +32,11 @@ public class CONSULTA extends javax.swing.JDialog {
         setIconImage(iconeTitulo);
 
     }
+            Banco_Dados bd = new Banco_Dados();
 
+            
+            
+            
     public void limparTABELA() {
         DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
         tableModel.setNumRows(0);
@@ -203,7 +207,7 @@ public class CONSULTA extends javax.swing.JDialog {
     }
 
     public void combox() {
-        Banco_Dados bd = new Banco_Dados();
+        // lista todos os clientes no combox
         if (bd.getConnection()) {
             try {
                 String query = "Select nome from cliente";
