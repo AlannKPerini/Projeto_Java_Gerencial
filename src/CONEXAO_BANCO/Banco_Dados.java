@@ -22,7 +22,6 @@ public class Banco_Dados {
         try {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(LOCAL, LOGIN, SENHA);
-            System.out.println("Conectou");
             return true;
         } catch (ClassNotFoundException erro) {
             System.out.println("Driver nao encontrado " + erro.toString());

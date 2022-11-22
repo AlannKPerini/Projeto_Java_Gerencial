@@ -210,15 +210,16 @@ public class CONSULTA extends javax.swing.JDialog {
         // lista todos os clientes no combox
         if (bd.getConnection()) {
             try {
-                String query = "Select nome from cliente";
+                String query = "Select idcliente, nome from cliente";
                 ResultSet rs;
                 PreparedStatement stmp = bd.connection.prepareStatement(query);
                 rs = stmp.executeQuery();
 
                 while (rs.next()) {
-                    jComboBox1.addItem(rs.getString("nome"));
-                   // String add1 = rs.getString("idcliente");
-                    //jLabel10.setText(add1);                 
+                   String add1 = rs.getString("idcliente");
+                   jLabel10.setText(add1);    
+                   jComboBox1.addItem(rs.getString("nome"));
+                              
                  }
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, "ERRO DE SQL" + e);

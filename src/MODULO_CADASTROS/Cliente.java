@@ -17,14 +17,16 @@ public class Cliente extends javax.swing.JDialog {
     public Cliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-         setLocationRelativeTo(null);
-         setResizable(false);
+        setLocationRelativeTo(null);
+        setResizable(false);
         // método para alterar o icon do java para uma imagem escolhida
-    URL img= this.getClass().getResource("clie3.png");
-    Image    iconeTitulo = Toolkit.getDefaultToolkit().getImage(img);
-    setIconImage(iconeTitulo);
+        URL img = this.getClass().getResource("clie3.png");
+        Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(img);
+        setIconImage(iconeTitulo);
 
     }
+
+    Banco_Dados bd = new Banco_Dados();
 
     // area de desenvolvimento ...
     @SuppressWarnings("unchecked")
@@ -209,29 +211,29 @@ public class Cliente extends javax.swing.JDialog {
     }//GEN-LAST:event_jBcadastrarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    this.dispose();
-    // método para encerrar a aplicação (somente frame)
+        this.dispose();
+        // método para encerrar a aplicação (somente frame)
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTCLIENTEFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTCLIENTEFocusGained
-      if(jTCLIENTE.getText().equals("Fulano de Tal")){
-          jTCLIENTE.setText("");
-          jTCLIENTE.setForeground(new Color(153,153,153,153));
-      }
-             if(jTCPF.getText().equals("12345678")){
-          jTCPF.setText("");
-          jTCPF.setForeground(new Color(153,153,153,153));
-      }
+        if (jTCLIENTE.getText().equals("Fulano de Tal")) {
+            jTCLIENTE.setText("");
+            jTCLIENTE.setForeground(new Color(153, 153, 153, 153));
+        }
+        if (jTCPF.getText().equals("12345678")) {
+            jTCPF.setText("");
+            jTCPF.setForeground(new Color(153, 153, 153, 153));
+        }
     }//GEN-LAST:event_jTCLIENTEFocusGained
 
     private void jTCLIENTEFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTCLIENTEFocusLost
-        if(jTCLIENTE.getText().equals("")){
-              jTCLIENTE.setText("");
-          jTCLIENTE.setForeground(new Color(153,153,153,153));
+        if (jTCLIENTE.getText().equals("")) {
+            jTCLIENTE.setText("");
+            jTCLIENTE.setForeground(new Color(153, 153, 153, 153));
         }
-         if(jTCPF.getText().equals("")){
-              jTCPF.setText("");
-          jTCPF.setForeground(new Color(153,153,153,153));
+        if (jTCPF.getText().equals("")) {
+            jTCPF.setText("");
+            jTCPF.setForeground(new Color(153, 153, 153, 153));
         }
     }//GEN-LAST:event_jTCLIENTEFocusLost
 
@@ -269,24 +271,24 @@ public class Cliente extends javax.swing.JDialog {
     }
 
     public void salvar2() {
-        Banco_Dados bd = new Banco_Dados();
         if (bd.getConnection()) {
             try {
-       String query = "insert into cliente(nome,cpf) values(?,?)";
-       PreparedStatement stmp = bd.connection.prepareStatement(query);
-          stmp.setString(1, jTCLIENTE.getText());
-          stmp.setString(2, jTCPF.getText());
-         stmp.executeUpdate();
-           JOptionPane.showMessageDialog(null,"DADOS GRAVADOS");
-         //  limparcampos(jPanel3);
-            stmp.close();
-            bd.connection.close();
-          limparcampos(jPanel3);
+                String query = "insert into cliente(nome,cpf) values(?,?)";
+                PreparedStatement stmp = bd.connection.prepareStatement(query);
+                stmp.setString(1, jTCLIENTE.getText());
+                stmp.setString(2, jTCPF.getText());
+                stmp.executeUpdate();
+                JOptionPane.showMessageDialog(null, "DADOS GRAVADOS");
+                //  limparcampos(jPanel3);
+                stmp.close();
+                bd.connection.close();
+                limparcampos(jPanel3);
             } catch (SQLException E) {
-           JOptionPane.showMessageDialog
-           (null, "ERRO DE GRAVAÇÃO NO BANCO" + E.toString());
+                JOptionPane.showMessageDialog(null, "ERRO DE GRAVAÇÃO NO BANCO" + E.toString());
 
-            }  }   }
+            }
+        }
+    }
 
     //  USANDO COMBOBOX
     //   CAD.setString(11,(String)jCargo.getSelectedItem());
