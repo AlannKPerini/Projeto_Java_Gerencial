@@ -26,8 +26,8 @@ public class pet extends javax.swing.JDialog {
         comboxanimal();
     }
     
-   public int id_tutor;
-     public int id_animal;
+    int id_tutor;
+    int id_animal;
     
     Banco_Dados bd = new Banco_Dados();
    

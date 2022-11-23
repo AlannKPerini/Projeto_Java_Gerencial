@@ -104,11 +104,6 @@ public class VENDA extends javax.swing.JDialog {
             try {
                 String query = "insert into vendas_has_produto (idvenda,idproduto,quant,valorunit,total) values(?,?,?,?,?)";
                 PreparedStatement stmp = bd.connection.prepareStatement(query);
-
-                quantidade = Float.valueOf(jTextField4.getText());
-                valor = Float.valueOf(jTextField2.getText());
-                total = quantidade * valor;
-                
                 jTextField6.setText(String.valueOf(total));
                 stmp.setString(1, jLabel11.getText());
                 stmp.setString(2, jTextField7.getText());
