@@ -2,6 +2,7 @@ package MODULO_CADASTROS;
 
 //área de importação de bibliotecas
 import CONEXAO_BANCO.Banco_Dados;
+import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
@@ -43,6 +44,8 @@ public class Cliente extends javax.swing.JDialog {
         jTCLIENTE = new javax.swing.JTextField();
         jTCPF = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jLabel6 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
@@ -107,20 +110,31 @@ public class Cliente extends javax.swing.JDialog {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("CPF");
 
+        jDateChooser1.setDateFormatString("yy/MM/yyyy");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("DATA NASC:");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTCLIENTE, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-                    .addComponent(jTCPF))
-                .addContainerGap(48, Short.MAX_VALUE))
+                    .addComponent(jTCPF)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,7 +147,11 @@ public class Cliente extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -160,14 +178,15 @@ public class Cliente extends javax.swing.JDialog {
                         .addContainerGap()
                         .addComponent(jLabel2)
                         .addGap(30, 30, 30)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jBcadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton1)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2)))))
+                                .addComponent(jButton2)
+                                .addGap(28, 28, 28)))))
                 .addContainerGap(146, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -180,12 +199,13 @@ public class Cliente extends javax.swing.JDialog {
                         .addComponent(jLabel1)
                         .addGap(36, 36, 36)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jBcadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(95, Short.MAX_VALUE))
+                        .addGap(20, 20, 20)))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBcadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -196,7 +216,9 @@ public class Cliente extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -207,7 +229,7 @@ public class Cliente extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jBcadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBcadastrarActionPerformed
-        salvar2();
+        salvar();
     }//GEN-LAST:event_jBcadastrarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -216,25 +238,25 @@ public class Cliente extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTCLIENTEFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTCLIENTEFocusGained
-        if (jTCLIENTE.getText().equals("Fulano de Tal")) {
+    /*    if (jTCLIENTE.getText().equals("Fulano de Tal")) {
             jTCLIENTE.setText("");
             jTCLIENTE.setForeground(new Color(153, 153, 153, 153));
         }
         if (jTCPF.getText().equals("12345678")) {
             jTCPF.setText("");
             jTCPF.setForeground(new Color(153, 153, 153, 153));
-        }
+        }*/
     }//GEN-LAST:event_jTCLIENTEFocusGained
 
     private void jTCLIENTEFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTCLIENTEFocusLost
-        if (jTCLIENTE.getText().equals("")) {
+      /*  if (jTCLIENTE.getText().equals("")) {
             jTCLIENTE.setText("");
             jTCLIENTE.setForeground(new Color(153, 153, 153, 153));
         }
         if (jTCPF.getText().equals("")) {
             jTCPF.setText("");
             jTCPF.setForeground(new Color(153, 153, 153, 153));
-        }
+        }*/
     }//GEN-LAST:event_jTCLIENTEFocusLost
 
     public static void limparcampos(JPanel jPanel) {
@@ -243,40 +265,29 @@ public class Cliente extends javax.swing.JDialog {
             if (componentes[i] instanceof JTextField) {
                 JTextField camposTF = (JTextField) componentes[i];
                 camposTF.setText("");
+               
 
             }
         }
     }
 
+    
+
+
+
+    
     public void salvar() {
-
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/gerencial1", "root", "root");
-            String query = "insert into cliente(nome,cpf) values(?,?)";
-            PreparedStatement stmp = con.prepareStatement(query);
-
-            stmp.setString(1, jTCLIENTE.getText());
-            stmp.setString(2, jTCPF.getText());
-
-            stmp.executeUpdate();
-            JOptionPane.showMessageDialog(null, "DADOS GRAVADOS");
-            stmp.close();
-            con.close();
-        } catch (ClassNotFoundException EX) {
-            JOptionPane.showMessageDialog(null, "DRIVER NAO ENCONTRADO" + EX);
-        } catch (SQLException E) {
-            JOptionPane.showMessageDialog(null, "ERRO DE GRAVAÇÃO NO BANCO" + E);
-        }
-    }
-
-    public void salvar2() {
         if (bd.getConnection()) {
             try {
-                String query = "insert into cliente(nome,cpf) values(?,?)";
+                  
+               // jDateChooser1.setDateFormatString("yy/MM/yyyy");
+              //  System.out.println(jDateChooser1);
+                String query = "insert into cliente(nome,cpf,data) values(?,?,?)";
                 PreparedStatement stmp = bd.connection.prepareStatement(query);
                 stmp.setString(1, jTCLIENTE.getText());
                 stmp.setString(2, jTCPF.getText());
+                stmp.setString(3, jDateChooser1.getDate().toString());
+                
                 stmp.executeUpdate();
                 JOptionPane.showMessageDialog(null, "DADOS GRAVADOS");
                 //  limparcampos(jPanel3);
@@ -290,6 +301,13 @@ public class Cliente extends javax.swing.JDialog {
         }
     }
 
+    
+  
+   
+    
+    
+    
+    
     //  USANDO COMBOBOX
     //   CAD.setString(11,(String)jCargo.getSelectedItem());
     public static void main(String args[]) {
@@ -335,14 +353,17 @@ public class Cliente extends javax.swing.JDialog {
     private javax.swing.JButton jBcadastrar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField jTCLIENTE;
     private javax.swing.JTextField jTCPF;
     // End of variables declaration//GEN-END:variables
+
 }

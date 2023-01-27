@@ -32,7 +32,7 @@ public class pet extends javax.swing.JDialog {
     Banco_Dados bd = new Banco_Dados();
    
     public void comboxtutor(){
-  jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"SELECIONE"}));
+ jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"SELECIONE"}));
  if(bd.getConnection()){
       try{
        String query = "select nome_tutor from tutores";
@@ -63,7 +63,7 @@ public class pet extends javax.swing.JDialog {
        ResultSet rs = id.executeQuery();
 
       while(rs.next()){
-      id_tutor = rs.getInt(1);
+         id_tutor = rs.getInt(1);
          System.out.println(id_tutor);
       
        }  

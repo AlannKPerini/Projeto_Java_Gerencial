@@ -22,7 +22,7 @@ public class CONSULTA extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         //  pesquisar2(); 
-        //    data_hora();
+          data_hora();
              combox();
         //  pesquisar();
         setLocationRelativeTo(null);
@@ -34,7 +34,7 @@ public class CONSULTA extends javax.swing.JDialog {
     }
             Banco_Dados bd = new Banco_Dados();
 
-            
+       public String cliente ;       
             
             
     public void limparTABELA() {
@@ -57,7 +57,8 @@ public class CONSULTA extends javax.swing.JDialog {
                     model.addRow(new Object[]{
                         rs.getString("idcliente"),
                         rs.getString("nome"),
-                        rs.getString("cpf"),});
+                        rs.getString("cpf"),
+                        rs.getString("data"),});
                 }
             } catch (SQLException E) {
                 JOptionPane.showMessageDialog(null, "ERRO DE PESQUISA NO BANCO" + E);
@@ -65,31 +66,7 @@ public class CONSULTA extends javax.swing.JDialog {
         }
     }
 
-    private void pesquisar2() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/gerencial", "root", "root");
-            String query = "select * from cliente where nome like ?";
-            PreparedStatement stmp = con.prepareStatement(query);
-
-            stmp.setString(1, "%" + jTPESQUISA.getText() + "%");
-            ResultSet rs = stmp.executeQuery();
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.setNumRows(0);
-
-            while (rs.next()) {
-                model.addRow(new Object[]{
-                    rs.getString("cod"),
-                    rs.getString("nome"),
-                    rs.getString("cpf"),});
-            }
-        } catch (ClassNotFoundException EX) {
-            JOptionPane.showMessageDialog(null, "DRIVER NAO ENCONTRADO" + EX);
-        } catch (SQLException E) {
-            JOptionPane.showMessageDialog(null, "ERRO DE GRAVAÇÃO NO BANCO" + E);
-        }
-    }
-
+    
     private void excluir_pela_tabela() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -148,6 +125,8 @@ public class CONSULTA extends javax.swing.JDialog {
                     jTnome.setText(add2);
                     String add3 = rs.getString("cpf");
                     jTcpf.setText(add3);
+                    
+                    
                 }
 
             } catch (SQLException e) {
@@ -156,6 +135,29 @@ public class CONSULTA extends javax.swing.JDialog {
         }
     }
 
+    private void selecaotabelaparaoutroform() {
+        int row = jTable1.getSelectedRow();
+        String table_click = (jTable1.getModel().getValueAt(row, 0).toString());
+        Banco_Dados bd = new Banco_Dados();
+        if (bd.getConnection()) {
+
+            try {
+                String query = "Select * from cliente where idcliente='" + table_click + "'";
+                ResultSet rs;
+                PreparedStatement pst = bd.connection.prepareStatement(query);
+                rs = pst.executeQuery();
+                while (rs.next()) {
+                     String add1 = rs.getString("idcliente");
+                    cliente = add1;  //COLOCO O ID DO CLIENTE NA VARIABEL PUBLICA;
+                      }
+
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "ERRO DE SQL" + e);
+            }
+        }
+    }
+    
+    
     private void excluir() {
         Banco_Dados bd = new Banco_Dados();
         if (bd.getConnection()) {
@@ -257,6 +259,7 @@ public class CONSULTA extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
@@ -382,13 +385,13 @@ public class CONSULTA extends javax.swing.JDialog {
         jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "COD", "NOME", "CPF"
+                "COD", "NOME", "CPF", "DATA"
             }
         ));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -416,19 +419,14 @@ public class CONSULTA extends javax.swing.JDialog {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(jLabel3)
-                        .addGap(38, 38, 38)
-                        .addComponent(jTPESQUISA, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(94, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())))
+                .addGap(19, 19, 19)
+                .addComponent(jLabel3)
+                .addGap(38, 38, 38)
+                .addComponent(jTPESQUISA, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(136, Short.MAX_VALUE))
+            .addComponent(jScrollPane1)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -463,16 +461,23 @@ public class CONSULTA extends javax.swing.JDialog {
 
         jLabel10.setText("jLabel10");
 
+        jButton5.setText("outroform");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(774, 774, 774))
+                .addGap(735, 735, 735))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -489,7 +494,9 @@ public class CONSULTA extends javax.swing.JDialog {
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(364, 364, 364)
-                        .addComponent(jLabel9))
+                        .addComponent(jLabel9)
+                        .addGap(235, 235, 235)
+                        .addComponent(jButton5))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -499,7 +506,9 @@ public class CONSULTA extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(jLabel9)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(jButton5))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(26, 26, 26)
@@ -552,6 +561,7 @@ public class CONSULTA extends javax.swing.JDialog {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         selecaotabela();
+        selecaotabelaparaoutroform();
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -562,6 +572,11 @@ public class CONSULTA extends javax.swing.JDialog {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         //   combox();
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+      new consulta_frame(cliente).show();
+    this.dispose();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -609,6 +624,7 @@ public class CONSULTA extends javax.swing.JDialog {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
